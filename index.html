@@ -7,12 +7,12 @@
 <title>MoneyCurve — Money Calculators</title>
 <style>
   :root {
-    color-scheme: dark;
-    --bg: #000000; --panel: #070a08; --raised: #0c110e;
-    --text: #eef5f0; --muted: #8b9a91; --faint: #5d6b63;
-    --line: #18211b; --line-strong: #243229;
-    --a: #22c55e; --a-strong: #4ade80; --b: #8a9a8f;
-    --soft: #0b2013; --soft-line: #14532d;
+    color-scheme: light;
+    --bg: #ffffff; --panel: #ffffff; --raised: #fbf6f6;
+    --text: #1c1314; --muted: #6b5d5f; --faint: #9a8c8e;
+    --line: #f0e4e5; --line-strong: #dfcdcf;
+    --a: #dc2626; --a-strong: #b91c1c; --b: #9ca3af;
+    --soft: #fef2f2; --soft-line: #fecaca;
   }
   * { box-sizing: border-box; }
   body {
@@ -24,39 +24,29 @@
   @media (min-width: 760px) { .wrap { padding: 0 24px; } }
   :focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
 
-  .top { position: sticky; top: 0; z-index: 10; background: rgba(0, 0, 0, 0.82);
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-  .top-in { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .top-in { display: flex; flex-direction: column; gap: 10px; padding-top: 12px; padding-bottom: 10px; }
+  @media (min-width: 1000px) {
+    .top-in { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
+  }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
   .brand svg { width: 28px; height: 28px; }
-  .top-note { font-size: 13px; color: var(--muted); }
-  @media (max-width: 560px) { .top-note { display: none; } }
 
   .hero { padding: 48px 0 32px; }
-  .eyebrow { margin: 0 0 12px; color: var(--a); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
   h1 { margin: 0 0 14px; max-width: 720px; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700; }
   .lead { margin: 0; max-width: 600px; color: var(--muted); font-size: 17px; }
 
-  .app { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
-  .nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .nav { display: flex; gap: 4px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
   .nav button {
-    display: flex; align-items: center; gap: 12px; flex: none; text-align: left; white-space: nowrap;
-    border: 1px solid var(--line); background: var(--panel); color: var(--muted);
-    font: inherit; padding: 10px 14px; border-radius: 10px; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; flex: none; white-space: nowrap;
+    border: 1px solid transparent; background: transparent; color: var(--muted);
+    font: inherit; font-weight: 600; font-size: 14px; padding: 8px 12px; border-radius: 10px; cursor: pointer;
   }
   .nav button:hover { color: var(--text); background: var(--raised); }
-  .nav button[aria-selected="true"] { background: var(--soft); border-color: var(--soft-line); color: var(--text); }
-  .nav svg { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-  .nav button[aria-selected="true"] svg { color: var(--a); }
-  .nav .n { display: block; font-weight: 600; font-size: 14px; }
-  .nav .d { display: none; font-size: 12px; line-height: 1.35; color: var(--faint); white-space: normal; }
-  @media (min-width: 1000px) {
-    .app { grid-template-columns: 252px minmax(0, 1fr); align-items: start; }
-    .nav { flex-direction: column; overflow: visible; position: sticky; top: 80px; padding: 0; }
-    .nav button { border-color: transparent; background: transparent; }
-    .nav .d { display: block; }
-  }
+  .nav button[aria-selected="true"] { background: var(--soft); border-color: var(--soft-line); color: var(--a-strong); }
+  .nav svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
   .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; min-width: 0; }
   .panel-head { padding: 20px 24px; border-bottom: 1px solid var(--line); }
@@ -87,7 +77,7 @@
   .stat { min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--raised); }
   .stat .k { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .stat .v { margin-top: 2px; font-size: 20px; font-weight: 650; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-  .stat.main { grid-column: 1 / -1; padding: 18px 20px; border-color: var(--soft-line); background: linear-gradient(135deg, #0c2816, #07130b); }
+  .stat.main { grid-column: 1 / -1; padding: 18px 20px; border-color: var(--soft-line); background: linear-gradient(135deg, #fef2f2, #ffffff); }
   .stat.main .v { font-size: clamp(28px, 5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; color: var(--a-strong); }
 
   .chart-box { position: relative; }
@@ -100,8 +90,8 @@
   .dot-a { fill: var(--a); }
   .dot-b { fill: var(--b); }
   .tip { position: absolute; top: 0; max-width: 100%; pointer-events: none; padding: 8px 10px; font-size: 12px;
-    font-variant-numeric: tabular-nums; background: #0f1612; border: 1px solid var(--line-strong); border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); }
+    font-variant-numeric: tabular-nums; background: #ffffff; border: 1px solid var(--line-strong); border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(60, 10, 10, 0.14); }
   .tip b { display: block; margin-bottom: 2px; font-weight: 500; color: var(--muted); }
   .tip i, .legend i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 2px; }
   .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 10px; font-size: 12px; color: var(--muted); }
@@ -129,26 +119,23 @@
   <div class="wrap top-in">
     <div class="brand">
       <svg viewBox="0 0 28 28" aria-hidden="true">
-        <rect width="28" height="28" rx="7" fill="#0c2816"/>
-        <path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="22" cy="8" r="2" fill="#4ade80"/>
+        <rect width="28" height="28" rx="7" fill="#dc2626"/>
+        <path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="22" cy="8" r="2" fill="#ffffff"/>
       </svg>
       MoneyCurve
     </div>
-    <span class="top-note">Free · No sign-up · Runs in your browser</span>
+    <nav class="nav" id="nav" role="tablist" aria-label="Calculators"></nav>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero">
-    <p class="eyebrow">Personal finance calculators</p>
     <h1>Clear numbers for everyday money decisions</h1>
     <p class="lead">Six calculators for loans, goals, deposits, retirement, inflation and card debt. Change any input and the answer updates instantly.</p>
   </section>
 
   <div class="app">
-    <nav class="nav" id="nav" role="tablist" aria-label="Calculators"></nav>
-
     <section class="panel">
       <div class="panel-head">
         <h2 id="calc-title"></h2>
@@ -598,8 +585,7 @@ for (const [tab, calc] of Object.entries(CALCS)) {
   button.type = 'button';
   button.setAttribute('role', 'tab');
   button.dataset.tab = tab;
-  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${calc.icon}</svg>` +
-    `<span><span class="n">${calc.name}</span><span class="d">${calc.desc}</span></span>`;
+  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${calc.icon}</svg>${calc.name}`;
   button.addEventListener('click', () => selectTab(tab));
   nav.appendChild(button);
 }
