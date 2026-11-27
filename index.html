@@ -133,7 +133,7 @@
 <main class="wrap">
   <section class="hero">
     <h1>Clear numbers for everyday <span>money decisions</span></h1>
-    <p class="lead">Six calculators for loans, goals, deposits, retirement, inflation and card debt. Change any input and the answer updates instantly.</p>
+    <p class="lead">Seven tools for loans, goals, deposits, retirement, inflation, card debt and credit score. Change any input and the answer updates instantly.</p>
   </section>
 
   <div class="app">
@@ -210,6 +210,11 @@ const CALCS = {
     desc: 'Time and interest to clear a credit card balance.',
     method: 'Each month, interest at the yearly rate ÷ 12 is added to the balance, then your payment is subtracted. No new spending, late fees or GST on interest are assumed.',
   },
+  cibil: {
+    name: 'CIBIL score', title: 'CIBIL score estimator',
+    desc: 'Rough estimate of your credit score from four habits.',
+    method: 'This is an estimate, not your real CIBIL score, and this site is not linked to TransUnion CIBIL. Score = 300 + 600 × weighted factors: on-time payments 40%, card limit used 30%, age of credit history 15%, recent applications 15%. Real scores use your full credit report. Check your actual score on the official CIBIL website.',
+  },
 };
 
 const FIELDS = {
@@ -247,6 +252,12 @@ const FIELDS = {
     { key: 'balance', label: 'Card balance owed', unit: '₹', min: 1000, max: 1000000, step: 1000, value: 50000 },
     { key: 'rate', label: 'Interest rate per year', unit: '%', min: 12, max: 48, step: 0.5, value: 36 },
     { key: 'payment', label: 'Payment every month', unit: '₹', min: 500, max: 100000, step: 500, value: 2500 },
+  ],
+  cibil: [
+    { key: 'onTime', label: 'Bills and EMIs paid on time', unit: '%', min: 50, max: 100, step: 1, value: 95 },
+    { key: 'used', label: 'Credit card limit used', unit: '%', min: 0, max: 100, step: 1, value: 30 },
+    { key: 'age', label: 'Age of oldest loan or card', unit: 'yr', min: 0, max: 20, step: 1, value: 3 },
+    { key: 'applied', label: 'Loans or cards applied for, last 12 months', unit: '', min: 0, max: 10, step: 1, value: 1 },
   ],
 };
 
@@ -419,6 +430,64 @@ chartEl.addEventListener('pointermove', (event) => {
 });
 chartEl.addEventListener('pointerleave', hideTip);
 
+const BANDS = [
+  { from: 300, to: 550, name: 'Poor', color: '#dc2626' },
+  { from: 550, to: 650, name: 'Average', color: '#f97316' },
+  { from: 650, to: 750, name: 'Good', color: '#ca8a04' },
+  { from: 750, to: 900, name: 'Excellent', color: '#16a34a' },
+];
+
+const ADVICE = {
+  onTime: 'Pay every EMI and card bill on or before the due date. Payment history carries the most weight.',
+  used: 'Keep card spending under 30% of your limit, or ask the bank for a higher limit.',
+  age: 'Keep your oldest card or account open. A longer credit history helps.',
+  applied: 'Avoid applying for many loans or cards in a short time. Each application is recorded.',
+};
+
+function calcCibil({ onTime, used, age, applied }) {
+  const usedValue = used <= 10 ? 1 : used <= 30 ? 1 - (used - 10) * 0.0075 : 0.85 * (100 - used) / 70;
+  const factors = [
+    { key: 'onTime', name: 'Late payments', weight: 0.40, value: Math.pow((onTime - 50) / 50, 2) },
+    { key: 'used', name: 'High card usage', weight: 0.30, value: usedValue },
+    { key: 'age', name: 'Short credit history', weight: 0.15, value: 0.2 + 0.8 * Math.min(1, age / 8) },
+    { key: 'applied', name: 'Many applications', weight: 0.15, value: Math.max(0, 1 - applied * 0.15) },
+  ];
+  const score = Math.round(300 + 600 * factors.reduce((sum, f) => sum + f.weight * f.value, 0));
+  const drag = factors
+    .map((f) => ({ key: f.key, name: f.name, lost: Math.round(600 * f.weight * (1 - f.value)) }))
+    .sort((x, y) => y.lost - x.lost)[0];
+  const band = BANDS.find((b) => score < b.to) || BANDS[BANDS.length - 1];
+  return { score, band, drag };
+}
+
+function drawGauge(score, band) {
+  const cx = 320, cy = 280, r = 210;
+  const point = (value, radius) => {
+    const angle = Math.PI * (1 - (value - 300) / 600);
+    return [(cx + radius * Math.cos(angle)).toFixed(1), (cy - radius * Math.sin(angle)).toFixed(1)];
+  };
+  const label = (value) => {
+    const [x, y] = point(value, r + 28);
+    return `<text class="axis" x="${x}" y="${+y + 4}" text-anchor="middle">${value}</text>`;
+  };
+  let svg = '';
+  for (const b of BANDS) {
+    const [x1, y1] = point(b.from + 3, r), [x2, y2] = point(b.to - 3, r);
+    svg += `<path d="M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}" fill="none" stroke="${b.color}" ` +
+      `stroke-width="22" opacity="${b === band ? 1 : 0.28}"/>` + label(b.from);
+  }
+  const [markX, markY] = point(score, r);
+  svg += label(900);
+  svg += `<circle cx="${markX}" cy="${markY}" r="13" fill="#ffffff" stroke="${band.color}" stroke-width="5"/>`;
+  svg += `<text x="${cx}" y="${cy - 62}" text-anchor="middle" style="font-size:76px;font-weight:700;fill:var(--text)">${score}</text>`;
+  svg += `<text x="${cx}" y="${cy - 24}" text-anchor="middle" style="font-size:20px;font-weight:600;fill:${band.color}">${band.name}</text>`;
+  chartEl.innerHTML = svg;
+  document.getElementById('legend').innerHTML = BANDS
+    .map((b) => `<span><i style="background:${b.color}"></i>${b.name} ${b.from}–${b.to}</span>`).join('');
+  plot = null;
+  hideTip();
+}
+
 function showStats(items) {
   document.getElementById('stats').innerHTML = items
     .map(([k, v, main]) => `<div class="stat${main ? ' main' : ''}"><div class="k">${k}</div><div class="v">${v}</div></div>`)
@@ -504,6 +573,16 @@ function render() {
         `Paying ${money(payment * 2)} instead clears it in ${span(r.double.months)} and saves ` +
         `${money(r.plan.interest - r.double.interest)} in interest.`;
     }
+  } else if (state.tab === 'cibil') {
+    const r = calcCibil(state.cibil);
+    showStats([
+      ['Estimated score', r.score, true],
+      ['Rating', r.band.name],
+      ['Biggest drag', r.drag.lost > 0 ? `${r.drag.name} (−${r.drag.lost})` : 'None'],
+    ]);
+    drawGauge(r.score, r.band);
+    note.textContent = (r.drag.lost > 0 ? ADVICE[r.drag.key] : 'All four habits are at their best.') +
+      ' Lenders usually prefer a score of 750 or above. This is an estimate, not your real CIBIL score.';
   } else {
     const r = calcLoan(state.loan);
     const extra = state.loan.extra;
