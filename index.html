@@ -47,7 +47,6 @@
   }
   .nav button:hover { color: var(--text); background: var(--raised); }
   .nav button[aria-selected="true"] { background: var(--soft); border-color: var(--soft-line); color: var(--a-strong); }
-  .nav svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
   .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; min-width: 0; }
   .panel-head { padding: 20px 24px; border-bottom: 1px solid var(--line); }
@@ -184,37 +183,31 @@ const CALCS = {
   loan: {
     name: 'Loan EMI', title: 'Loan EMI calculator',
     desc: 'Monthly payment, total interest, and what paying extra saves.',
-    icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
     method: 'EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r the monthly rate and n the number of months. Interest is charged on the reducing balance. Extra payments go fully to principal every month.',
   },
   goal: {
     name: 'Goal planner', title: 'Goal planner',
     desc: 'Monthly investment needed to afford a future goal.',
-    icon: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     method: 'The goal cost is raised by inflation every year until the target date. Existing savings grow at the expected return, compounded monthly. The monthly investment, paid at the start of each month, fills the remaining gap.',
   },
   fd: {
     name: 'FD returns', title: 'Fixed deposit calculator',
     desc: 'Maturity value and interest on a fixed deposit.',
-    icon: '<path d="M12 3l9 5H3z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18"/>',
     method: 'Maturity = P × (1 + r ÷ 4)^(4 × years). Interest compounds every quarter, as most Indian banks do. Tax on interest is not deducted.',
   },
   retire: {
     name: 'Retirement', title: 'Retirement planner',
     desc: 'Fund you need to retire and how much to invest monthly.',
-    icon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     method: 'Monthly expense is raised by inflation to your retirement year, then multiplied by 12 × 25 to get the fund target. This is the 25x rule, equal to withdrawing 4% a year. The monthly investment is compounded monthly at the expected return.',
   },
   inflation: {
     name: 'Inflation', title: 'Inflation calculator',
     desc: 'What your money will be worth in the future.',
-    icon: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
     method: 'Buying power = amount ÷ (1 + inflation)^years. Future cost = amount × (1 + inflation)^years.',
   },
   card: {
     name: 'Card payoff', title: 'Credit card payoff calculator',
     desc: 'Time and interest to clear a credit card balance.',
-    icon: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/>',
     method: 'Each month, interest at the yearly rate ÷ 12 is added to the balance, then your payment is subtracted. No new spending, late fees or GST on interest are assumed.',
   },
 };
@@ -587,7 +580,7 @@ for (const [tab, calc] of Object.entries(CALCS)) {
   button.type = 'button';
   button.setAttribute('role', 'tab');
   button.dataset.tab = tab;
-  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${calc.icon}</svg>${calc.name}`;
+  button.textContent = calc.name;
   button.addEventListener('click', () => selectTab(tab));
   nav.appendChild(button);
 }
