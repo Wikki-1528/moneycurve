@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="What MoneyCurve is, how each calculator works, and how your privacy is protected.">
+<title>About — MoneyCurve</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap site-header-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs><rect width="28" height="28" rx="7" fill="url(#logo-fill)"/><path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="8" r="2" fill="#ffffff"/></svg>MoneyCurve</a>
+    <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="calculator.html">Calculators</a>
+      <a href="about.html" aria-current="page">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="page-head">
+    <h1>About MoneyCurve</h1>
+    <p class="lead">A small set of money calculators built to give clear answers without sign-ups or ads.</p>
+  </section>
+
+  <section class="prose">
+    <h2>What it is</h2>
+    <p>MoneyCurve helps you answer everyday money questions: what a loan really costs, how much to invest for a goal, what a deposit will pay, and how prices eat into savings.</p>
+
+    <h2>Privacy</h2>
+    <p>The whole site is a set of static files. Every calculation runs in your browser, and nothing you type is sent to a server or saved.</p>
+
+    <h2>How each tool is calculated</h2>
+    <div data-methods></div>
+
+    <h2>Disclaimer</h2>
+    <p>MoneyCurve is for education only. Returns and inflation are assumptions you choose, not guarantees. Results do not include bank fees or taxes unless stated. This is not financial advice. Talk to a qualified adviser before making big decisions.</p>
+    <p>The CIBIL score tool is an estimate and is not linked to TransUnion CIBIL.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs><rect width="28" height="28" rx="7" fill="url(#logo-fill)"/><path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="8" r="2" fill="#ffffff"/></svg>MoneyCurve</a>
+        <p>Free money calculators that run in your browser.</p>
+      </div>
+      <div>
+        <h4>Tools</h4>
+        <div class="foot-links" data-tool-links></div>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <div class="foot-links">
+          <a href="index.html">Home</a>
+          <a href="calculator.html">Calculators</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year></span> MoneyCurve</span>
+      <span>For education only. Returns and inflation are assumptions, not guarantees. Not financial advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

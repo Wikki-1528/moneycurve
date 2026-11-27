@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Loan EMI, goal planner, FD returns, retirement, inflation, card payoff and CIBIL score estimator.">
+<title>Calculators — MoneyCurve</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap site-header-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs><rect width="28" height="28" rx="7" fill="url(#logo-fill)"/><path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="8" r="2" fill="#ffffff"/></svg>MoneyCurve</a>
+    <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="calculator.html" aria-current="page">Calculators</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="page-head">
+    <h1>Calculators</h1>
+    <p class="lead">Pick a tool. Change any input and the answer updates instantly.</p>
+  </section>
+
+  <nav class="nav tool-tabs" id="nav" role="tablist" aria-label="Calculators"></nav>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2 id="calc-title"></h2>
+        <p id="calc-desc"></p>
+      </div>
+      <button class="button ghost small" id="reset" type="button">Reset</button>
+    </div>
+    <div class="work">
+      <div class="controls" id="controls"></div>
+      <div class="results">
+        <div class="stats" id="stats"></div>
+        <div class="chart-box">
+          <svg id="chart" viewBox="0 0 640 320" role="img" aria-label="Chart of results"></svg>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+          <p id="note"></p>
+        </div>
+        <details class="method">
+          <summary>How this is calculated</summary>
+          <p id="method"></p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs><rect width="28" height="28" rx="7" fill="url(#logo-fill)"/><path d="M6 20c5 0 6-12 16-12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="8" r="2" fill="#ffffff"/></svg>MoneyCurve</a>
+        <p>Free money calculators that run in your browser.</p>
+      </div>
+      <div>
+        <h4>Tools</h4>
+        <div class="foot-links" data-tool-links></div>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <div class="foot-links">
+          <a href="index.html">Home</a>
+          <a href="calculator.html">Calculators</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year></span> MoneyCurve</span>
+      <span>For education only. Returns and inflation are assumptions, not guarantees. Not financial advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script src="js/calculators.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
